@@ -1,4 +1,4 @@
-package com.example.eshop
+package com.example.eshop.activities
 
 import android.content.Intent
 import android.os.Build
@@ -8,7 +8,9 @@ import android.os.Handler
 import android.os.Looper
 import android.view.WindowInsets
 import android.view.WindowManager
-import androidx.core.view.ViewCompat
+import android.graphics.Typeface
+import android.widget.TextView
+import com.example.eshop.R
 
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,20 +21,24 @@ class SplashActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
         val controller = window.insetsController
             controller?.hide(WindowInsets.Type.statusBars())
+        }else {
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
         }
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
 
 
         Handler(Looper.getMainLooper()).postDelayed(
             {
-                startActivity(Intent(this@SplashActivity,MainActivity::class.java))
+                startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
                 //finish 結束當前 Activity
              finish()
             },
         2000
         )
+
+        val typeface: Typeface = Typeface.createFromAsset(assets,"Montserrat-Bold.ttf")
+        findViewById<TextView>(R.id.tv_app_name).typeface = typeface
     }
 }
