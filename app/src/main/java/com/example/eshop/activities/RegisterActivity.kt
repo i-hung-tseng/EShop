@@ -12,6 +12,7 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.*
 import com.example.eshop.R
+import com.example.eshop.firestore.FirestoreClass
 import com.example.eshop.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -53,8 +54,7 @@ class RegisterActivity : BaseActivity(),View.OnClickListener {
         }
     }
 
-    private fun registerAccount(): Boolean {
-
+    private fun registerAccount(){
 
         if (validateRegisterDetails()) {
             showDialog(resources.getString(R.string.please_wait))
@@ -68,7 +68,6 @@ class RegisterActivity : BaseActivity(),View.OnClickListener {
                     auth.createUserWithEmailAndPassword(email, password)
                             .addOnCompleteListener { task ->
 
-                                hideDialog()
                                 if (task.isSuccessful) {
                                 val firebaseUser: FirebaseUser? = task.result?.user
                                 if (firebaseUser != null){
@@ -79,23 +78,13 @@ class RegisterActivity : BaseActivity(),View.OnClickListener {
                                             et_last_name.text.toString().trim(),
                                             et_email.text.toString().trim(),
                                     )
-
+                                    FirestoreClass().registerUser(this@RegisterActivity,user)
                                 }
-
-
-
-                                    showErrorSnackBar(resources.getString(R.string.register_successful), false)
 
                                 }
                             }
-//                    auth.currentUser?.let {
-//                        val request = UserProfileChangeRequest.Builder()
-//                            .setDisplayName(name)
-//                            .build()
-//                        it.updateProfile(request)
-//                    }
 
-                    FirebaseAuth.getInstance().signOut()
+//                    FirebaseAuth.getInstance().signOut()
                 } catch (e: Exception) {
                     Log.d(tag, e.message.toString())
                     withContext(Dispatchers.Main) {
@@ -105,17 +94,16 @@ class RegisterActivity : BaseActivity(),View.OnClickListener {
                 }
                 hideDialog()
             }
-            return true
         } else {
-            Log.d(tag, "validate return false")
-            return false
+            hideDialog()
+            Timber.d("!valid")
+
         }
     }
 
     fun userRegistrationSuccess(){
-
+            Toast.makeText(this@RegisterActivity,resources.getString(R.string.register_successful),Toast.LENGTH_SHORT).show()
     }
-
 
     private fun validateRegisterDetails(): Boolean {
         return when {

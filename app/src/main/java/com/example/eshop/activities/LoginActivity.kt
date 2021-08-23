@@ -12,10 +12,14 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
 import com.example.eshop.R
+import com.example.eshop.firestore.FirestoreClass
+import com.example.eshop.models.User
+import com.example.eshop.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
+import timber.log.Timber
 import kotlin.coroutines.coroutineContext
 
 class LoginActivity : BaseActivity(), View.OnClickListener{
@@ -37,8 +41,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener{
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
             )
         }
-
-
 
         tv_register.setOnClickListener(this)
         btn_login.setOnClickListener(this)
@@ -83,15 +85,37 @@ class LoginActivity : BaseActivity(), View.OnClickListener{
             val password = et_login_password.text.toString().trim()
             CoroutineScope(Dispatchers.IO).launch {
                 auth.signInWithEmailAndPassword(email,password).addOnCompleteListener{
-                    hideDialog()
+
                     if (it.isSuccessful){
+
+                        FirestoreClass().getUserDetails(this@LoginActivity)
+//                        startActivity(Intent(this@LoginActivity,MainActivity::class.java))
+//                        finish()
                         showErrorSnackBar(resources.getString(R.string.login_successful),false)
                     }else{
                         //直接用Task去呼叫 exception
+                            hideDialog()
                         showErrorSnackBar(it.exception?.message.toString(),true)
                     }
                 }
             }
         }
+    }
+    fun userLoggedInSuccess(user: User){
+        hideDialog()
+        Timber.d(user.firstName)
+        Timber.d(user.lastName)
+        Timber.d(user.email)
+
+        if(user.profileCompleted){
+            val intent: Intent = Intent(this@LoginActivity,MainActivity::class.java)
+            intent.putExtra(Constants.EXTRA_USER_DETAILS,user)
+            startActivity(intent)
+        }else{
+            val intent: Intent = Intent(this@LoginActivity,UserProfileActivity::class.java)
+            intent.putExtra(Constants.EXTRA_USER_DETAILS,user)
+            startActivity(intent)
+        }
+        finish()
     }
 }

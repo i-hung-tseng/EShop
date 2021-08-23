@@ -46,4 +46,18 @@
     <string name="forgot_password_title_description">Enter your username and e-mail address we\'ll send you a email to reset your password</string>
     <string name="email_sent_successfully">Email sent successfully to reset your password!</string>
 
+
+    <!--profile-->
+    <string name="title_complete_profile">PROFILE</string>
+    <string name="et_hint_mobile_number">Mobile Number</string>
+    <string name="rb_lbl_male">MALE</string>
+    <string name="rb_lbl_female">FEMALE</string>
+    <string name="btn_lbl_save">Save</string>
+    <string name="err_have_permission">You already have the storage permission</string>
+    <string name="storage_granted">The storage permission is granted!</string>
+    <string name="storage_denied">Opps,you just denied the permission fro storage. You can also allow it from setting.</string>
+    <string name="image_selection_failed">Image selection Failed!</string>
+    <string name="err_msg_enter_mobile_number">Please enter mobile number</string>
+    <string name="msg_profile_update_success">Your profile is updated successfully.</string>
+
 </resources>
