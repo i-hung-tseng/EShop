@@ -3,26 +3,31 @@ package com.example.eshop.firestore
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
-import com.example.eshop.activities.LoginActivity
-import com.example.eshop.activities.RegisterActivity
-import com.example.eshop.activities.UserProfileActivity
+import com.example.eshop.R
+import com.example.eshop.ui.activities.LoginActivity
+import com.example.eshop.ui.activities.RegisterActivity
+import com.example.eshop.ui.activities.UserProfileActivity
 import com.example.eshop.models.User
+import com.example.eshop.ui.activities.SettingsActivity
 import com.example.eshop.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import timber.log.Timber
+import java.io.ByteArrayOutputStream
+import java.util.logging.LoggingMXBean
 
 
 class FirestoreClass {
 
     private val mFireStore = FirebaseFirestore.getInstance()
 
+//    已經創完帳號後，在這邊merge新的資訊
     fun registerUser(activity: RegisterActivity, userInfo: User){
 
         mFireStore.collection(Constants.USERS)
@@ -47,14 +52,14 @@ class FirestoreClass {
         return currentUserId
     }
 
+    //把user傳回LoginActivity
     fun getUserDetails(activity: Activity){
-
         mFireStore.collection(Constants.USERS)
             //應該是這邊的 getCurrentUserId會拿到 現在的 CurrentUserId
             .document(getCurrentUserId())
             .get()
             .addOnSuccessListener {
-            val user = it.toObject(User::class.java)
+                val user = it.toObject(User::class.java)
                 val sharePreferences = activity.getSharedPreferences(
                     Constants.MYSHOPPAL_PREFERENCES,Context.MODE_PRIVATE
                 )
@@ -68,6 +73,23 @@ class FirestoreClass {
                         if (user != null) {
                             activity.userLoggedInSuccess(user)
                         }
+                    }
+                    is SettingsActivity -> {
+                        if (user != null) {
+                            activity.userDetailsSuccess(user)
+                        }
+                    }
+                }
+            }
+            .addOnFailureListener { e ->
+                when(activity){
+                    is LoginActivity -> {
+                        activity.hideDialog()
+//                        activity.showErrorSnackBar(e.message.toString(),true)
+                    }
+                    is SettingsActivity -> {
+                        activity.hideDialog()
+//                        activity.showErrorSnackBar(e.message.toString(),true)
                     }
                 }
             }
@@ -96,7 +118,16 @@ class FirestoreClass {
 
     }
 
+    //這步驟是上傳至 firebase 的 storage而已，
     fun updateImageToCloudStorage(activity: Activity,imageFileUri: Uri?){
+        Timber.d("inside child is ${Constants.USER_PROFILE_IMAGE + System.currentTimeMillis() + "."
+                + Constants.getFileExtension(
+                activity,
+                imageFileUri
+        )}")
+        Timber.d("Testing imageFileUri:$imageFileUri")
+        //裡面的 pathString =  User_Profile_Image1629873910127.jpg
+        //先給一個 path位置，再給current秒數，再給副檔案名稱
         val sRef: StorageReference =  FirebaseStorage.getInstance().reference.child(
             Constants.USER_PROFILE_IMAGE + System.currentTimeMillis() + "."
                 + Constants.getFileExtension(
@@ -105,10 +136,12 @@ class FirestoreClass {
                 )
         )
         sRef.putFile(imageFileUri!!).addOnSuccessListener { taskSnapshot ->
-            Timber.d(taskSnapshot.metadata!!.reference!!.downloadUrl.toString())
+            Timber.d("Testing"+ taskSnapshot.metadata!!.reference!!.downloadUrl.toString())
             taskSnapshot.metadata!!.reference!!.downloadUrl
+
+
                 .addOnSuccessListener { uri->
-                    Timber.d("Downloadable image URL ${uri.toString()}")
+                    Timber.d("Testing Downloadable image URL $uri")
                     when(activity){
                         is UserProfileActivity -> {
                         activity.imageUploadSuccess(uri.toString())
@@ -126,4 +159,5 @@ class FirestoreClass {
             }
 
     }
+
 }

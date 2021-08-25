@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.provider.MediaStore
 import android.webkit.MimeTypeMap
+import timber.log.Timber
 
 object Constants {
 
@@ -20,10 +21,12 @@ object Constants {
 
     const val MALE: String = "Male"
     const val FEMALE: String = "Female"
-
+    const val FIRST_NAME = "firstName"
+    const val LAST_NAME = "lastName"
     const val MOBILE: String = "mobile"
     const val GENDER: String = "gender"
     const val IMAGE: String = "image"
+    const val COMPLETE_PROFILE: String = "profileCompleted"
 
     const val USER_PROFILE_IMAGE: String = "User_Profile_Image"
 
@@ -32,9 +35,11 @@ object Constants {
         activity.startActivityForResult(galleryIntent, PICK_IMAGE_REQUEST_CODE)
     }
 
-    // TODO: 2021/8/23 要確認一下 getFileExtension
+    // 拿到副檔案名稱
     fun getFileExtension(activity: Activity, uri: Uri?): String? {
+        Timber.d("getFileExtension type : ${activity.contentResolver.getType(uri!!)}")
         return MimeTypeMap.getSingleton()
             .getExtensionFromMimeType(activity.contentResolver.getType(uri!!))
+
     }
 }

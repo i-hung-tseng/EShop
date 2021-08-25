@@ -1,4 +1,4 @@
-package com.example.eshop.activities
+package com.example.eshop.ui.activities
 
 import android.content.Intent
 import android.os.Build
@@ -28,17 +28,15 @@ class SplashActivity : AppCompatActivity() {
             )
         }
 
-
         Handler(Looper.getMainLooper()).postDelayed(
             {
-                startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
+                startActivity(Intent(this@SplashActivity, DashboardActivity::class.java))
                 //finish 結束當前 Activity
              finish()
             },
-        2000
+        1500
         )
-
-        val typeface: Typeface = Typeface.createFromAsset(assets,"Montserrat-Bold.ttf")
+         val typeface: Typeface = Typeface.createFromAsset(assets,"Montserrat-Bold.ttf")
         findViewById<TextView>(R.id.tv_app_name).typeface = typeface
     }
 }

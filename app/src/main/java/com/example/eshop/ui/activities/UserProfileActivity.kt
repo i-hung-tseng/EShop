@@ -1,12 +1,10 @@
-package com.example.eshop.activities
+package com.example.eshop.ui.activities
 
 import android.app.Activity
 
-import android.app.TimePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
@@ -18,24 +16,18 @@ import com.example.eshop.firestore.FirestoreClass
 import com.example.eshop.models.User
 import com.example.eshop.utils.Constants
 import com.example.eshop.utils.GlideLoader
-import com.github.dhaval2404.imagepicker.ImagePicker
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.UserProfileChangeRequest
-import com.google.firebase.firestore.SetOptions
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_forgot_password.*
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.activity_user_profile.*
 import timber.log.Timber
 import java.io.IOException
-import java.lang.Exception
-import java.util.jar.Manifest
 
 class UserProfileActivity : BaseActivity(),View.OnClickListener{
 
     private lateinit var mUserDetails: User
+    //以下這個是 onActivityResult的 Uri 等於 data.data
     private var mSelectedImageFileUri: Uri? = null
+    //這個是換算成可下載的 Uri
     private var mUserProfileImageUri: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +35,19 @@ class UserProfileActivity : BaseActivity(),View.OnClickListener{
         setContentView(R.layout.activity_user_profile)
 
 
-        setUserDetail()
+        if (intent.hasExtra(Constants.EXTRA_USER_DETAILS)){
+            mUserDetails = intent.getParcelableExtra(Constants.EXTRA_USER_DETAILS)!!}
+
+            setUserDetailsToEdText()
+
+            if (mUserDetails.profileCompleted){
+                tv_user_profile_title.text = resources.getString(R.string.title_complete_profile)
+
+            }else{
+                setupActionBar()
+                tv_user_profile_title.text = resources.getString(R.string.title_edit_your_profile)
+
+            }
         iv_user_photo.setOnClickListener(this)
         btn_user_profile_submit.setOnClickListener(this)
 
@@ -62,26 +66,37 @@ class UserProfileActivity : BaseActivity(),View.OnClickListener{
                     permissionPhoto()
                 }
             }
-
             R.id.btn_user_profile_submit -> {
+
 
                 if (validateUserProfileDetails()){
 
                     showDialog(resources.getString(R.string.please_wait))
-
                     //mSelectedImageFileUri是onActivityResult拿到的 data.data
-                    if (mSelectedImageFileUri != null)
-                    FirestoreClass().updateImageToCloudStorage(this,mSelectedImageFileUri)
-                    else{
+                    if (mSelectedImageFileUri != null){
+                        Timber.d("Testing mSelectedImageFileUri != null")
+                        FirestoreClass().updateImageToCloudStorage(this,mSelectedImageFileUri)   
+                    } else{
                         updateUserProfileDetail()
+                        Timber.d("Testing mSelectedImageFileUri is null")
                     }
                 }
             }
         }
     }
-
     private fun updateUserProfileDetail(){
         val userHashMap = HashMap<String,Any>()
+
+        val firstName = et_user_profile_first_name.text.toString().trim()
+        if (firstName != mUserDetails.firstName){
+            userHashMap[Constants.FIRST_NAME] = firstName
+        }
+
+        val lastName = et_user_profile_last_name.text.toString().trim()
+        if(lastName != mUserDetails.lastName){
+            userHashMap[Constants.LAST_NAME] = lastName
+        }
+
         val mobile = et_user_profile_mobile_number.text.toString()
         val gender = if (rb_male.isChecked){
             Constants.MALE
@@ -89,16 +104,23 @@ class UserProfileActivity : BaseActivity(),View.OnClickListener{
             Constants.FEMALE
         }
 
+        if (gender.isNotEmpty() && gender != mUserDetails.gender){
+            userHashMap[Constants.GENDER] = gender
+        }
+
         if (mUserProfileImageUri.isNotEmpty()){
             userHashMap[Constants.IMAGE] = mUserProfileImageUri
         }
 
 
-        if (mobile.isNotEmpty()){
+        if (mobile.isNotEmpty() && mobile != mUserDetails.mobile.toString()){
             userHashMap[Constants.MOBILE] = mobile.toLong()
         }
         userHashMap[Constants.GENDER] = gender
 //        showDialog(resources.getString(R.string.please_wait))
+
+        userHashMap[Constants.COMPLETE_PROFILE] = true
+
         FirestoreClass().updateUserProfileDetails(this,userHashMap)
     }
 
@@ -113,7 +135,7 @@ class UserProfileActivity : BaseActivity(),View.OnClickListener{
     fun userProfileUpdateSuccess(){
         hideDialog()
         Toast.makeText(this,resources.getString(R.string.msg_profile_update_success),Toast.LENGTH_SHORT).show()
-        startActivity(Intent(this@UserProfileActivity,MainActivity::class.java))
+        startActivity(Intent(this@UserProfileActivity, DashboardActivity::class.java))
         finish()
     }
 
@@ -133,6 +155,8 @@ class UserProfileActivity : BaseActivity(),View.OnClickListener{
             }
         }
     }
+
+    // TODO: 2021/8/23 這邊要看 onActivitiyResult 之後怎麼用
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -169,57 +193,45 @@ class UserProfileActivity : BaseActivity(),View.OnClickListener{
     }
 
     fun imageUploadSuccess(imageUri: String){
-//        hideDialog()
         mUserProfileImageUri = imageUri
         updateUserProfileDetail()
     }
 
-    fun setUserDetail(){
 
+    private fun setupActionBar() {
+        val toolbar =
+            findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar_register_activity)
+        setSupportActionBar(toolbar)
+        val actionBar = supportActionBar
+        if (actionBar != null) {
+            //顯示返回按鈕
+            actionBar.setDisplayHomeAsUpEnabled(true)
+            //設置返回按鈕圖案
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24)
+        }
+        //返回事件
+        toolbar.setNavigationOnClickListener { onBackPressed() }
 
+    }
 
-        if (intent.hasExtra(Constants.EXTRA_USER_DETAILS) ){
-            intent.getParcelableExtra<User>(Constants.EXTRA_USER_DETAILS)?.let {
-                mUserDetails = it
-            }
+    private fun setUserDetailsToEdText(){
+        et_user_profile_first_name.setText(mUserDetails.firstName)
+        et_user_profile_last_name.setText(mUserDetails.lastName)
+        et_user_profile_email.setText(mUserDetails.email)
+        et_user_profile_email.isEnabled = true
+        et_user_profile_first_name.isEnabled = true
+        et_user_profile_last_name.isEnabled = true
+        if (mUserDetails.mobile != 0L){
+            et_user_profile_mobile_number.setText(mUserDetails.mobile.toString())
+        }
+        if (mUserDetails.gender == Constants.MALE){
+            rb_male.isChecked = true
+        }else{
+            rb_female.isChecked = true
         }
 
-
-
-
-
-        et_user_profile_first_name.apply {
-            isEnabled = false
-            setText(mUserDetails.firstName)
-        }
-
-        et_user_profile_last_name.apply {
-            isEnabled = false
-            setText(mUserDetails.lastName)
-        }
-
-        et_user_profile_email.apply {
-            isEnabled = false
-            setText(mUserDetails.email)
-        }
-
-        mUserDetails.mobile?.let {
-            et_user_profile_mobile_number.apply {
-                isEnabled = false
-                setText(it.toString())
-            }
-        }
-
-        mUserDetails.gender?.let {
-            if (it == Constants.MALE){
-                rg_gender.check(R.id.rb_male)
-            }else{
-                rg_gender.check(R.id.rb_female)
-            }
-        }
         mUserDetails.image?.let {
             v_people.visibility = View.GONE
-            GlideLoader(this).loadUserPicture(Uri.parse(it),iv_user_photo)
-        }
+            GlideLoader(this).loadUserPicture(Uri.parse(it),iv_user_photo) }
     }
 }

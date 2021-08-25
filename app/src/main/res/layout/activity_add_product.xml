@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activities.AddProductActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_addProduct_activity"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/app_gradient_color_background"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/tv_add_product_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingStart="@dimen/toolbar_title_paddingStart"
+            android:paddingLeft="@dimen/toolbar_title_paddingStart"
+            android:paddingRight="0dp"
+            android:paddingEnd="0dp"
+            android:text="@string/add_your_product"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/toolbar_title_text_size"
+            android:textStyle="bold" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <ImageView
+        android:id="@+id/iv_product"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/addProduct_image_height"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_addProduct_activity"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@color/colorLightGrey" />
+
+    <ImageView
+        android:id="@+id/iv_camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_photo_camera_black_48dp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_product"
+        app:layout_constraintEnd_toEndOf="@+id/iv_product"/>
+        
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_addProduct_product_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/iv_product"
+        android:layout_marginTop="25dp">
+
+
+        <com.example.eshop.utils.MSPEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/ed_padding"
+            android:textSize="@dimen/et_textSize"
+            android:inputType="text"
+            android:hint="@string/product_title"/>
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_addProduct_product_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/til_addProduct_product_title"
+        android:layout_marginTop="25dp">
+
+
+        <com.example.eshop.utils.MSPEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/ed_padding"
+            android:textSize="@dimen/et_textSize"
+            android:inputType="text"
+            android:hint="@string/product_price"/>
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_addProduct_product_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/til_addProduct_product_price"
+        android:layout_marginTop="25dp">
+
+
+        <com.example.eshop.utils.MSPEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/ed_padding"
+            android:textSize="@dimen/et_textSize"
+            android:inputType="text"
+            android:hint="@string/product_price"/>
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_addProduct_product_quantity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/til_addProduct_product_description"
+        android:layout_marginTop="25dp">
+
+
+        <com.example.eshop.utils.MSPEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/ed_padding"
+            android:textSize="@dimen/et_textSize"
+            android:inputType="text"
+            android:hint="@string/product_price"/>
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.example.eshop.utils.MSPButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/button_background"
+        android:text="@string/btn_lbl_submit"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintTop_toBottomOf="@+id/til_addProduct_product_quantity"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

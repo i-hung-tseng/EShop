@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.UserProfileActivity">
+    tools:context=".ui.activities.UserProfileActivity">
 
 
     <androidx.appcompat.widget.Toolbar
@@ -21,7 +21,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:padding="@dimen/toolbar_title_paddingStart"
+            android:paddingStart="@dimen/toolbar_title_paddingStart"
+            android:paddingLeft="@dimen/toolbar_title_paddingStart"
+            android:paddingRight="0dp"
             android:paddingEnd="0dp"
             android:text="@string/title_complete_profile"
             android:textColor="@color/colorWhite"

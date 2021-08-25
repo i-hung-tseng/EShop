@@ -1,9 +1,6 @@
-package com.example.eshop.activities
+package com.example.eshop.ui.activities
 
-import android.content.Intent
-import android.nfc.Tag
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -16,19 +13,14 @@ import com.example.eshop.firestore.FirestoreClass
 import com.example.eshop.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.UserProfileChangeRequest
-import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.coroutines.*
-import kotlinx.coroutines.tasks.await
-import org.w3c.dom.Text
 import timber.log.Timber
 import java.lang.Exception
 
 class RegisterActivity : BaseActivity(),View.OnClickListener {
 
     lateinit var auth: FirebaseAuth
-    val tag = "Testing"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,9 +54,8 @@ class RegisterActivity : BaseActivity(),View.OnClickListener {
             val password = findViewById<EditText>(R.id.et_confirm_password).text.toString().trim()
 
             CoroutineScope(Dispatchers.IO).launch {
-                Log.d(tag, "registerAccount coroutines")
                 try {
-                    Log.d(tag, "registerAccount coroutines try")
+                    //先透過 email&password 來辦帳號
                     auth.createUserWithEmailAndPassword(email, password)
                             .addOnCompleteListener { task ->
 
@@ -86,7 +77,6 @@ class RegisterActivity : BaseActivity(),View.OnClickListener {
 
 //                    FirebaseAuth.getInstance().signOut()
                 } catch (e: Exception) {
-                    Log.d(tag, e.message.toString())
                     withContext(Dispatchers.Main) {
                         showErrorSnackBar(e.message.toString(), true)
                         return@withContext false

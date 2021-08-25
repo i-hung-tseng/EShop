@@ -1,16 +1,12 @@
-package com.example.eshop.activities
+package com.example.eshop.ui.activities
 
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.TextView
 import com.example.eshop.R
 import com.example.eshop.firestore.FirestoreClass
 import com.example.eshop.models.User
@@ -18,9 +14,6 @@ import com.example.eshop.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.*
-import kotlinx.coroutines.tasks.await
-import timber.log.Timber
-import kotlin.coroutines.coroutineContext
 
 class LoginActivity : BaseActivity(), View.OnClickListener{
 
@@ -56,11 +49,10 @@ class LoginActivity : BaseActivity(), View.OnClickListener{
                     loginAccount()
                 }
                 R.id.tv_forgot_password -> {
-                    startActivity(Intent(this@LoginActivity,ForgotPasswordActivity::class.java))
+                    startActivity(Intent(this@LoginActivity, ForgotPasswordActivity::class.java))
                 }
-                R.id.tv_register -> {  startActivity(Intent(this,RegisterActivity::class.java)) }
+                R.id.tv_register -> {  startActivity(Intent(this, RegisterActivity::class.java)) }
             }
-
         }
     }
 
@@ -85,9 +77,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener{
             val password = et_login_password.text.toString().trim()
             CoroutineScope(Dispatchers.IO).launch {
                 auth.signInWithEmailAndPassword(email,password).addOnCompleteListener{
-
                     if (it.isSuccessful){
-
                         FirestoreClass().getUserDetails(this@LoginActivity)
 //                        startActivity(Intent(this@LoginActivity,MainActivity::class.java))
 //                        finish()
@@ -101,18 +91,15 @@ class LoginActivity : BaseActivity(), View.OnClickListener{
             }
         }
     }
+    //這個是在 FirestoreClass呼叫，並傳來的 user
     fun userLoggedInSuccess(user: User){
         hideDialog()
-        Timber.d(user.firstName)
-        Timber.d(user.lastName)
-        Timber.d(user.email)
-
         if(user.profileCompleted){
-            val intent: Intent = Intent(this@LoginActivity,MainActivity::class.java)
+            val intent: Intent = Intent(this@LoginActivity, DashboardActivity::class.java)
             intent.putExtra(Constants.EXTRA_USER_DETAILS,user)
             startActivity(intent)
         }else{
-            val intent: Intent = Intent(this@LoginActivity,UserProfileActivity::class.java)
+            val intent: Intent = Intent(this@LoginActivity, UserProfileActivity::class.java)
             intent.putExtra(Constants.EXTRA_USER_DETAILS,user)
             startActivity(intent)
         }

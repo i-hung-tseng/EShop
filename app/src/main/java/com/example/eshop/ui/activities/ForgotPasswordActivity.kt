@@ -1,7 +1,6 @@
-package com.example.eshop.activities
+package com.example.eshop.ui.activities
 
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.WindowInsets
@@ -72,7 +71,6 @@ class ForgotPasswordActivity : BaseActivity() {
         if (actionBar != null){
             actionBar.setDisplayHomeAsUpEnabled(true)
             actionBar.setHomeAsUpIndicator(R.drawable.ic_black_color_back_24)
-//            actionBar.setTitle("")
         }
         toolBar.setNavigationOnClickListener{
             onBackPressed()

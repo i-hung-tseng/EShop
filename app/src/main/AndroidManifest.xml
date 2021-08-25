@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.eshop">
-
-
-<!--    使用權限-->
-
-<!--    //相機-->
-    <uses-permission android:name="android.permission.CAMERA"/>
-<!--    //寫入外部資料權限-->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-<!--    //讀外部資料權限-->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-
+    <!-- 使用權限 -->
+    <!-- //相機 -->
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- //寫入外部資料權限 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- //讀外部資料權限 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".utils.MyApp"
@@ -21,27 +15,33 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EShop">
-        <activity android:name=".activities.UserProfileActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
-        </activity>
+        <activity android:name=".ui.activities.AddProductActivity"></activity>
         <activity
-            android:name=".activities.ForgotPasswordActivity"
+            android:name=".ui.activities.SettingsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
-
-        </activity>
-        <activity android:name=".activities.BaseActivity" />
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"></activity>
         <activity
-            android:name=".activities.RegisterActivity"
+            android:name=".ui.activities.DashboardActivity"
+            android:label="@string/app_name"></activity>
+        <activity
+            android:name=".ui.activities.UserProfileActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"></activity>
+        <activity
+            android:name=".ui.activities.ForgotPasswordActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"></activity>
+        <activity android:name=".ui.activities.BaseActivity" />
+        <activity
+            android:name=".ui.activities.RegisterActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
         <activity
-            android:name=".activities.LoginActivity"
+            android:name=".ui.activities.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
         <activity
-            android:name=".activities.SplashActivity"
+            android:name=".ui.activities.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
@@ -53,7 +53,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".ui.activities.MainActivity"
             android:screenOrientation="portrait" />
     </application>
 
