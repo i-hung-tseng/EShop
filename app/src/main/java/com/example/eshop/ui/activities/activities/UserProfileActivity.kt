@@ -1,4 +1,4 @@
-package com.example.eshop.ui.activities
+package com.example.eshop.ui.activities.activities
 
 import android.app.Activity
 
@@ -75,7 +75,7 @@ class UserProfileActivity : BaseActivity(),View.OnClickListener{
                     //mSelectedImageFileUri是onActivityResult拿到的 data.data
                     if (mSelectedImageFileUri != null){
                         Timber.d("Testing mSelectedImageFileUri != null")
-                        FirestoreClass().updateImageToCloudStorage(this,mSelectedImageFileUri)   
+                        FirestoreClass().updateImageToCloudStorage(this,mSelectedImageFileUri,Constants.USER_PROFILE_IMAGE)
                     } else{
                         updateUserProfileDetail()
                         Timber.d("Testing mSelectedImageFileUri is null")
@@ -200,7 +200,7 @@ class UserProfileActivity : BaseActivity(),View.OnClickListener{
 
     private fun setupActionBar() {
         val toolbar =
-            findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar_register_activity)
+            findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar_user_profile_activity)
         setSupportActionBar(toolbar)
         val actionBar = supportActionBar
         if (actionBar != null) {

@@ -1,4 +1,4 @@
-package com.example.eshop.ui.activities
+package com.example.eshop.ui.activities.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

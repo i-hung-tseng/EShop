@@ -19,6 +19,7 @@ object Constants {
     const val READ_STORAGE_PERMISSION: Int = 0
     const val PICK_IMAGE_REQUEST_CODE: Int = 1
 
+//    Profile
     const val MALE: String = "Male"
     const val FEMALE: String = "Female"
     const val FIRST_NAME = "firstName"
@@ -28,7 +29,15 @@ object Constants {
     const val IMAGE: String = "image"
     const val COMPLETE_PROFILE: String = "profileCompleted"
 
+//    照片
     const val USER_PROFILE_IMAGE: String = "User_Profile_Image"
+    const val PRODUCT_IMAGE: String = "Product_Image"
+
+
+//    Product
+    const val PRODUCT_ID = "product_id"
+    const val PRODUCT: String = "products"
+
 
     fun showImageChooser(activity: Activity){
         val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
@@ -42,4 +51,7 @@ object Constants {
             .getExtensionFromMimeType(activity.contentResolver.getType(uri!!))
 
     }
+
+
+
 }

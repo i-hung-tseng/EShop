@@ -3,11 +3,9 @@ package com.example.eshop.ui.activities.fragments
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.eshop.R
-import com.example.eshop.ui.activities.AddProductActivity
+import com.example.eshop.ui.activities.activities.AddProductActivity
 
 class ProductsFragment : Fragment() {
 
@@ -17,13 +15,7 @@ class ProductsFragment : Fragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-//        homeViewModel =
-//                ViewModelProvider(this).get(HomeViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_products, container, false)
-        val textView: TextView = root.findViewById(R.id.text_home)
-//        homeViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = "This is home fragment"
-//        })
 
         setHasOptionsMenu(true)
         return root

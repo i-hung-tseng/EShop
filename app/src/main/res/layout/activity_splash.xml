@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_red"
-    tools:context=".ui.activities.SplashActivity">
+    tools:context=".ui.activities.activities.SplashActivity">
 
     <com.example.eshop.utils.MSPTextViewBold
         android:id="@+id/tv_app_name"

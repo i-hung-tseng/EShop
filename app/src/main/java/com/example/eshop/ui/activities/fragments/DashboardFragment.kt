@@ -6,7 +6,7 @@ import android.view.*
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.eshop.R
-import com.example.eshop.ui.activities.SettingsActivity
+import com.example.eshop.ui.activities.activities.SettingsActivity
 
 class DashboardFragment : Fragment() {
 

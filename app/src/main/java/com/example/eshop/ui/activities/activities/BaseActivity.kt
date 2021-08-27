@@ -1,4 +1,4 @@
-package com.example.eshop.ui.activities
+package com.example.eshop.ui.activities.activities
 
 import android.app.Dialog
 import androidx.appcompat.app.AppCompatActivity

@@ -73,8 +73,23 @@
     <string name="lbl_edit">Edit</string>
     <string name="lbl_address">Address</string>
     <string name="btn_lbl_logout">Logout</string>
+
+<!--    addProduct-->
     <string name="add_your_product">Add your Product</string>
     <string name="product_title">Product Title</string>
     <string name="product_price">Product Price</string>
+    <string name="product_description">Product Description</string>
+    <string name="product_quantity">Product Quantity</string>
+    <string name="msg_product_update_successful">Your product is updated successfully.</string>
 
+<!--    addProduct_error_message-->
+    <string name="err_msg_enter_product_title">Please enter title.</string>
+    <string name="err_msg_enter_product_price">Please enter price.</string>
+    <string name="err_msg_enter_product_description">Please enter description.</string>
+    <string name="err_msg_enter_product_quantity">Please enter quantity.</string>
+    <string name="err_msg_enter_product_picture">Please select picture.</string>
+
+
+    <string name="no_products_added_yet">No products added yet!</string>
+    
 </resources>

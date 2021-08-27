@@ -1,8 +1,7 @@
-package com.example.eshop.ui.activities
+package com.example.eshop.ui.activities.activities
 
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.example.eshop.R
@@ -71,14 +70,14 @@ class SettingsActivity : BaseActivity(),View.OnClickListener {
 
                 R.id.btn_logout ->{
                     FirebaseAuth.getInstance().signOut()
-                    val intent = Intent(this@SettingsActivity,LoginActivity::class.java)
+                    val intent = Intent(this@SettingsActivity, LoginActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
                     finish()
                 }
 
                 R.id.tv_edit -> {
-                    val intent = Intent(this,UserProfileActivity::class.java)
+                    val intent = Intent(this, UserProfileActivity::class.java)
                     intent.putExtra(Constants.EXTRA_USER_DETAILS,mUserDetails)
                     startActivity(intent)
                 }

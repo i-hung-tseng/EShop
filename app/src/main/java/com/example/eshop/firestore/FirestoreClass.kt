@@ -3,15 +3,10 @@ package com.example.eshop.firestore
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
-import com.example.eshop.R
-import com.example.eshop.ui.activities.LoginActivity
-import com.example.eshop.ui.activities.RegisterActivity
-import com.example.eshop.ui.activities.UserProfileActivity
+import com.example.eshop.models.Product
 import com.example.eshop.models.User
-import com.example.eshop.ui.activities.SettingsActivity
+import com.example.eshop.ui.activities.activities.*
 import com.example.eshop.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -19,8 +14,6 @@ import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import timber.log.Timber
-import java.io.ByteArrayOutputStream
-import java.util.logging.LoggingMXBean
 
 
 class FirestoreClass {
@@ -119,17 +112,15 @@ class FirestoreClass {
     }
 
     //這步驟是上傳至 firebase 的 storage而已，
-    fun updateImageToCloudStorage(activity: Activity,imageFileUri: Uri?){
-        Timber.d("inside child is ${Constants.USER_PROFILE_IMAGE + System.currentTimeMillis() + "."
-                + Constants.getFileExtension(
-                activity,
-                imageFileUri
-        )}")
+    fun updateImageToCloudStorage(activity: Activity,imageFileUri: Uri?,inputType: String){
+
+
+
         Timber.d("Testing imageFileUri:$imageFileUri")
         //裡面的 pathString =  User_Profile_Image1629873910127.jpg
         //先給一個 path位置，再給current秒數，再給副檔案名稱
         val sRef: StorageReference =  FirebaseStorage.getInstance().reference.child(
-            Constants.USER_PROFILE_IMAGE + System.currentTimeMillis() + "."
+            inputType + System.currentTimeMillis() + "."
                 + Constants.getFileExtension(
                 activity,
                 imageFileUri
@@ -146,6 +137,9 @@ class FirestoreClass {
                         is UserProfileActivity -> {
                         activity.imageUploadSuccess(uri.toString())
                         }
+                        is AddProductActivity -> {
+                         activity.imageUploadSuccess(uri.toString())
+                        }
                     }
                 }
         }
@@ -159,5 +153,31 @@ class FirestoreClass {
             }
 
     }
+
+    fun updateProductDetails(activity: AddProductActivity, product: Product){
+        mFireStore.collection(Constants.PRODUCT).add(product).addOnSuccessListener {
+
+            mFireStore.collection(Constants.PRODUCT).document(it.id)
+                    .update(Constants.PRODUCT_ID,it.id)
+                    activity.uploadProductSuccess()
+        }
+                .addOnFailureListener {
+                    activity.showErrorSnackBar(it.message.toString(),true)
+                }
+    }
+
+//    fun updateProductImage(activity: AddProductActivity, uri: Uri){
+//        val sRef = FirebaseStorage.getInstance().reference.child(Constants.PRODUCT_IMAGE + System.currentTimeMillis() + Constants.getFileExtension(activity,uri))
+//        sRef.putFile(uri).addOnSuccessListener {
+//            it.metadata!!.reference!!.downloadUrl.addOnSuccessListener {
+//                activity.imageUploadSuccess(it.toString())
+//            }
+//        }
+//                .addOnFailureListener {
+//                    activity.showErrorSnackBar(it.message.toString(),true)
+//                }
+//
+//
+//    }
 
 }

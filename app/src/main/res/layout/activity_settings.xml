@@ -9,7 +9,7 @@
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintLeft_toLeftOf="parent"
     app:layout_constraintRight_toRightOf="parent"
-    tools:context=".ui.activities.SettingsActivity">
+    tools:context=".ui.activities.activities.SettingsActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
