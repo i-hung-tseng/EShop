@@ -74,7 +74,7 @@
     <string name="lbl_address">Address</string>
     <string name="btn_lbl_logout">Logout</string>
 
-<!--    addProduct-->
+    <!--    addProduct-->
     <string name="add_your_product">Add your Product</string>
     <string name="product_title">Product Title</string>
     <string name="product_price">Product Price</string>
@@ -82,14 +82,41 @@
     <string name="product_quantity">Product Quantity</string>
     <string name="msg_product_update_successful">Your product is updated successfully.</string>
 
-<!--    addProduct_error_message-->
+    <!--    addProduct_error_message-->
     <string name="err_msg_enter_product_title">Please enter title.</string>
     <string name="err_msg_enter_product_price">Please enter price.</string>
     <string name="err_msg_enter_product_description">Please enter description.</string>
     <string name="err_msg_enter_product_quantity">Please enter quantity.</string>
     <string name="err_msg_enter_product_picture">Please select picture.</string>
 
-
+    <!--    productFragment-->
     <string name="no_products_added_yet">No products added yet!</string>
-    
+    <string name="msg_product_delete_successful">Your product was deleted successfully.</string>
+    <string name="delete_dialog_title">Delete</string>
+    <string name="delete_dialog_message">Are you sure you want to delete the product?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_dashboard_items_found">No items found!</string>
+
+    <!--    product details-->
+    <string name="title_product_details">PRODUCT DETAILS</string>
+    <string name="lbl_product_description">Product Description</string>
+    <string name="lbl_product_details_stock_quantity">Stock Quantity</string>
+    <string name="btn_lbl_add_to_cart">ADD TO CART</string>
+    <string name="successful_message_item_added_to_cart">Product was added to your cart.</string>
+    <string name="btn_lbl_go_to_cart">GO TO CART</string>
+
+    <!--    cart-->
+    <string name="title_my_cart">MY CART</string>
+    <string name="no_cart_item_found">No item found in cart!</string>
+    <string name="lbl_subtotal">Subtotal</string>
+    <string name="lbl_shipping_charge">Shipping Charge</string>
+    <string name="lbl_total_amount">Total Amount</string>
+    <string name="btn_lbl_checkout">CheckOut</string>
+    <string name="action_cart">My Cart</string>
+
+
 </resources>

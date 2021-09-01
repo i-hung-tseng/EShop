@@ -1,5 +1,6 @@
 package com.example.eshop.ui.activities.activities
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -8,6 +9,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.eshop.R
+import com.example.eshop.utils.Constants
+import timber.log.Timber
 
 class DashboardActivity : BaseActivity() {
 
@@ -34,4 +37,5 @@ class DashboardActivity : BaseActivity() {
     override fun onBackPressed() {
         doubleBackToExit()
     }
+
 }

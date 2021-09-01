@@ -27,6 +27,7 @@ object Constants {
     const val MOBILE: String = "mobile"
     const val GENDER: String = "gender"
     const val IMAGE: String = "image"
+    const val USER_ID: String = "user_id"
     const val COMPLETE_PROFILE: String = "profileCompleted"
 
 //    照片
@@ -38,6 +39,12 @@ object Constants {
     const val PRODUCT_ID = "product_id"
     const val PRODUCT: String = "products"
 
+//    Detail
+    const val EXTRA_PRODUCT_OWNER_ID: String = "extra_product_owner_id"
+
+//    Cart
+    const val CART_ITEM = "cartItem"
+    const val DEFAULT_CART_QUANTITY: Int = 1
 
     fun showImageChooser(activity: Activity){
         val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)

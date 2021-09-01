@@ -5,12 +5,24 @@ import android.os.Bundle
 import android.view.*
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eshop.R
+import com.example.eshop.firestore.FirestoreClass
+import com.example.eshop.models.Product
+import com.example.eshop.ui.activities.activities.CartListActivity
+import com.example.eshop.ui.activities.activities.DashboardActivity
+import com.example.eshop.ui.activities.activities.ProductDetailsActivity
 import com.example.eshop.ui.activities.activities.SettingsActivity
+import com.example.eshop.ui.activities.adapter.DashboardAdapter
+import com.example.eshop.utils.Constants
+import kotlinx.android.synthetic.main.fragment_dashboard.*
+import timber.log.Timber
 
-class DashboardFragment : Fragment() {
+class DashboardFragment : BaseFragment() {
 
-//    private lateinit var dashboardViewModel: DashboardViewModel
+    private lateinit var productList:ArrayList<Product>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,6 +30,10 @@ class DashboardFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
+    override fun onResume() {
+        getDashboardItemsList()
+        super.onResume()
+    }
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -27,9 +43,7 @@ class DashboardFragment : Fragment() {
 //        dashboardViewModel =
 //                ViewModelProvider(this).get(DashboardViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
-        val textView: TextView = root.findViewById(R.id.text_dashboard)
 //        dashboardViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = "This is dashboard fragment"
 //        })
         return root
     }
@@ -46,7 +60,56 @@ class DashboardFragment : Fragment() {
                 startActivity(Intent(requireActivity(), SettingsActivity::class.java))
                 return true
             }
+            R.id.action_going_cart -> {
+                startActivity(Intent(requireActivity(),CartListActivity::class.java))
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    fun successDashboardItemsList(dashboardItemsList: ArrayList<Product>){
+        Timber.d("enter dashboard successful")
+        hideDialog()
+        productList = dashboardItemsList
+        if (productList.size > 0){
+
+            rv_dashboard_items.visibility = View.VISIBLE
+            tv_no_dashboard_items_found.visibility = View.GONE
+            setAdapter()
+        }else{
+            rv_dashboard_items.visibility = View.GONE
+            tv_no_dashboard_items_found.visibility = View.VISIBLE
+
+        }
+    }
+
+    private fun getDashboardItemsList(){
+        showDialog(requireActivity().resources.getString(R.string.please_wait))
+        FirestoreClass().getDashboardItemsList(this)
+    }
+
+    private fun setAdapter(){
+        val mRecyclerview = rv_dashboard_items
+        mRecyclerview.setHasFixedSize(true)
+        val linearLayoutManager = GridLayoutManager(activity,2)
+        mRecyclerview.layoutManager = linearLayoutManager
+        val dashboardAdapter =  DashboardAdapter(requireActivity(),productList)
+        mRecyclerview.adapter = dashboardAdapter
+        dashboardAdapter.setOnClickListener(object: DashboardAdapter.OnClickListener {
+            override fun onClick(position: Int, product: Product) {
+                val intent = Intent(Intent(context,ProductDetailsActivity::class.java))
+                intent.putExtra(Constants.PRODUCT,product)
+                intent.putExtra(Constants.EXTRA_PRODUCT_OWNER_ID,product.user_id)
+                startActivity(intent)
+            }
+
+        })
+    }
+
+    fun turnToDetailsActivity(productId: String){
+
+
+
     }
 }

@@ -15,28 +15,37 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EShop">
-        <activity android:name=".ui.activities.activities.AddProductActivity"
+        <activity android:name=".ui.activities.activities.CartListActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
-            >
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" >
+
         </activity>
         <activity
-            android:name=".ui.activities.activities.SettingsActivity"
+            android:name=".ui.activities.activities.ProductDetailsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
 
         </activity>
         <activity
+            android:name=".ui.activities.activities.AddProductActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+        <activity
+            android:name=".ui.activities.activities.SettingsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+        <activity
             android:name=".ui.activities.activities.DashboardActivity"
-            android:label="@string/app_name"></activity>
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activities.activities.UserProfileActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"></activity>
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
         <activity
             android:name=".ui.activities.activities.ForgotPasswordActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"></activity>
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
         <activity android:name=".ui.activities.activities.BaseActivity" />
         <activity
             android:name=".ui.activities.activities.RegisterActivity"

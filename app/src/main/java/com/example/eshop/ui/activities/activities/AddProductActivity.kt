@@ -145,7 +145,7 @@ class AddProductActivity : BaseActivity(), View.OnClickListener {
 
     fun uploadProductSuccess(){
         hideDialog()
-        showErrorSnackBar(resources.getString(R.string.msg_product_update_successful),false)
+        Toast.makeText(this,resources.getString(R.string.msg_product_update_successful),Toast.LENGTH_SHORT).show()
         finish()
     }
 
