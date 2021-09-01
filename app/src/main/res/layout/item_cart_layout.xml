@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/cart_item_marginTop"
+    android:background="@color/colorWhite"
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/cart_item_paddingStartEnd"
+    android:paddingTop="@dimen/cart_item_paddingTopBottom"
+    android:paddingEnd="@dimen/cart_item_paddingStartEnd"
+    android:paddingBottom="@dimen/cart_item_paddingTopBottom">
+
+
+    <LinearLayout
+        android:id="@+id/ll_cart_item_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item_dashboard_background"
+        android:padding="@dimen/cart_item_image_padding">
+
+        <ImageView
+            android:id="@+id/iv_cart_item_image"
+            android:layout_width="@dimen/cart_item_image_width"
+            android:layout_height="@dimen/cart_item_image_height"
+            android:background="@color/colorImageViewBackground"
+            android:contentDescription="@string/content_description"
+            android:scaleType="fitXY"/>
+
+        <LinearLayout
+            android:id="@+id/ll_cart_item_details"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/cart_item_details_marginStart"
+            android:layout_marginEnd="@dimen/cart_item_details_marginEnd"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <com.example.eshop.utils.MSPTextView
+                android:id="@+id/tv_cart_item_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/item_value_text_color"
+                android:textSize="@dimen/cart_item_title_textSize"
+                tools:text= "Cart Item Title" />
+
+
+
+
+
+        </LinearLayout>
+
+
+
+
+
+
+    </LinearLayout>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

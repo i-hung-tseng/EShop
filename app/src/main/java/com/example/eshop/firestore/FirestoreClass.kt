@@ -266,4 +266,26 @@ class FirestoreClass {
 
                 }
     }
+
+    fun getCartList(activity:CartListActivity){
+        mFireStore.collection(Constants.CART_ITEM)
+            .whereEqualTo(Constants.USER_ID,getCurrentUserId())
+            .get()
+            .addOnSuccessListener {
+                val list: ArrayList<CartItem> = ArrayList()
+                for (i in it.documents){
+                    val cartItem = i.toObject(CartItem::class.java)
+                    cartItem?.let {
+                        list.add(it)
+                    }
+                }
+                activity.getCartListSuccessful(list)
+            }
+            .addOnFailureListener {
+                activity.hideDialog()
+                Timber.d("Error while getting cart item list cause $it")
+            }
+
+
+    }
 }
