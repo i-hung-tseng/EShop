@@ -35,7 +35,7 @@ import timber.log.Timber
             is mViewHolder -> {
                 GlideLoader(context).loadProductPicture(model.photo,holder.itemView.iv_dashboard_item_image)
                 holder.itemView.tv_dashboard_item_title.text = model.title
-                holder.itemView.tv_dashboard_item_price.text = model.price.toString()
+                holder.itemView.tv_dashboard_item_price.text = "$${model.price}"
 //                holder.itemView.setOnClickListener {
 //                    val intent = Intent(Intent(context,ProductDetailsActivity::class.java))
 //                    intent.putExtra(Constants.PRODUCT,model)

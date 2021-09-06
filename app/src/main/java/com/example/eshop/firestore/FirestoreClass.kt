@@ -7,13 +7,9 @@ import android.net.Uri
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.eshop.R
-import com.example.eshop.models.CartItem
-import com.example.eshop.models.Product
-import com.example.eshop.models.User
+import com.example.eshop.models.*
 import com.example.eshop.ui.activities.activities.*
-import com.example.eshop.ui.activities.fragments.BaseFragment
-import com.example.eshop.ui.activities.fragments.DashboardFragment
-import com.example.eshop.ui.activities.fragments.ProductsFragment
+import com.example.eshop.ui.activities.fragments.*
 import com.example.eshop.utils.Constants
 import com.google.common.math.Quantiles
 import com.google.firebase.auth.FirebaseAuth
@@ -267,7 +263,7 @@ class FirestoreClass {
                 }
     }
 
-    fun getCartList(activity:CartListActivity){
+    fun getCartList(activity:Activity){
         mFireStore.collection(Constants.CART_ITEM)
             .whereEqualTo(Constants.USER_ID,getCurrentUserId())
             .get()
@@ -279,13 +275,304 @@ class FirestoreClass {
                         list.add(it)
                     }
                 }
-                activity.getCartListSuccessful(list)
+                when(activity){
+                    is  CartListActivity ->{
+                        activity.getCartListSuccessful(list)
+                    }
+                    is CheckoutActivity -> {
+                        activity.getCartItemsFromFireStoreSuccessful(list)
+                    }
+
+                }
+
+            }
+            .addOnFailureListener {
+                when(activity){
+                    is CartListActivity -> {
+                        activity.hideDialog()
+                        Timber.d("Error while getting cart item list cause $it")
+                    }
+                    is CheckoutActivity -> {
+                        activity.hideDialog()
+                        Timber.d("Error while getting cart item list cause $it")
+                    }
+                }
+            }
+    }
+
+    fun getAllProductList(activity:Activity){
+        mFireStore.collection(Constants.PRODUCT)
+                .get()
+                .addOnSuccessListener { document ->
+
+                    val productList: ArrayList<Product> = ArrayList()
+                    for(i in document.documents){
+                        val product = i.toObject(Product::class.java)
+                        product?.let {
+                            productList.add(it)
+                        }
+                    }
+
+                    when(activity){
+                        is  CartListActivity ->{
+
+                            activity.getProductListSuccessful(productList)
+                        }
+                        is CheckoutActivity -> {
+                            activity.getProductFromFireStoreSuccessful(productList)
+                        }
+                    }
+                }
+                .addOnFailureListener {
+                    when(activity){
+                        is CartListActivity -> {
+                            activity.hideDialog()
+                            Timber.d("Error while getting all product list cause $it")
+                        }
+                    }
+
+                }
+    }
+
+    fun removeItemFromCart(context: Context, cart_id: String){
+        Timber.d("removeItem cart_id: $cart_id")
+        mFireStore.collection(Constants.CART_ITEM)
+                .document(cart_id)
+                .delete()
+                .addOnSuccessListener {
+                    when(context){
+                        is CartListActivity ->{
+                            context.itemRemovedSuccessful()
+                        }
+                    }
+                }
+                .addOnFailureListener {
+                    e->
+                    when(context){
+                        is  CartListActivity -> {
+                            context.hideDialog()
+                        }
+                    }
+                    Timber.d("Error while removing the item from the cart list")
+                }
+    }
+
+    fun updateMyCart(context: Context, cart_id: String, itemHasMap: HashMap<String,Any>){
+        mFireStore.collection(Constants.CART_ITEM)
+                .document(cart_id)
+                .update(itemHasMap)
+                .addOnSuccessListener {
+                    when(context){
+                        is CartListActivity ->{
+                            context.itemUpdateSuccess()
+                        }
+                    }
+                }
+                .addOnFailureListener { e->
+
+                    when(context) {
+                        is CartListActivity -> {
+                            context.hideDialog()
+                        }
+                    }
+
+                }
+    }
+
+
+    fun addAddressToFireStore(activity: Activity,addressModel: Address){
+        mFireStore.collection(Constants.ADDRESS)
+            .add(addressModel)
+            .addOnSuccessListener {
+
+                val mHashMap = HashMap<String,Any>()
+                mHashMap[Constants.ID] = it.id
+                it.update(mHashMap)
+                Timber.d("address id hashmap: $mHashMap id:${it.id}")
+                Timber.d("address model : ${it.get()}")
+
+                when(activity){
+                    is AddEditAddressActivity ->{
+                        activity.updateAddressToFirestoreSuccessful()
+                    }
+                }
+            }
+            .addOnFailureListener {
+                when(activity){
+                    is AddEditAddressActivity ->{
+                        activity.hideDialog()
+                    }
+                }
+            }
+    }
+
+    fun getAddressList(activity: AddressListActivity){
+        mFireStore.collection(Constants.ADDRESS)
+            .whereEqualTo(Constants.USER_ID,getCurrentUserId())
+            .get()
+            .addOnSuccessListener{ document ->
+
+                val addressList: ArrayList<Address> = ArrayList<Address>()
+                for (i in document.documents){
+                    val address = i.toObject(Address::class.java)
+                    address?.let {
+                        addressList.add(it)
+                    }
+                }
+                activity.getAddressListFromFirestoreSuccessful(addressList)
+             }
+            .addOnFailureListener {
+                activity.hideDialog()
+                Timber.d("Error while getting the address")
+            }
+    }
+
+
+    fun deleteAddress(activity: AddressListActivity,addressId: String){
+        mFireStore.collection(Constants.ADDRESS)
+                .document(addressId)
+                .delete()
+                .addOnSuccessListener {
+                    activity.deleteAddressSuccessful()
+
+                }
+                .addOnFailureListener {
+                    activity.hideDialog()
+                    Timber.d("Error while deleting address cause $it")
+                }
+    }
+
+
+    fun updateAddress(activity: AddEditAddressActivity,addressInfo: Address, addressId: String){
+
+        mFireStore.collection(Constants.ADDRESS)
+                .document(addressId)
+                .set(addressInfo, SetOptions.merge())
+                .addOnSuccessListener {
+                    activity.updateAddressToFirestoreSuccessful()
+                    Timber.d("update address in firestore")
+                }
+                .addOnFailureListener {
+                    activity.hideDialog()
+                    Timber.d("Error while updating Address to Firestore casue $it")
+                }
+    }
+
+    fun placeOrder(activity: CheckoutActivity, order: Order){
+
+        mFireStore.collection(Constants.ORDERS)
+            .document()
+            .set(order, SetOptions.merge())
+            .addOnSuccessListener {
+
+                val mHashMap = HashMap<String,Any>()
+                activity.orderPlaceSuccessful()
+
             }
             .addOnFailureListener {
                 activity.hideDialog()
-                Timber.d("Error while getting cart item list cause $it")
+                Timber.d("Error while placing an order")
             }
+    }
 
+    fun updateAllDetails(activity: CheckoutActivity, cartList: ArrayList<CartItem>, order: Order){
+        val writeBatch = mFireStore.batch()
+
+        for (cartItem in cartList){
+
+
+//            val productHashMap = HashMap<String,Any>()
+//            productHashMap[Constants.STOCK_QUANTITY] =
+//                    (cartItem.stock_quantity) - (cartItem.cart_quantity)
+
+            val soldProduct = SoldProduct(
+                cartItem.product_owner_id,
+                cartItem.title,
+                cartItem.price.toString(),
+                cartItem.cart_quantity.toString(),
+                cartItem.image,
+                order.title,
+                order.order_datetime,
+                order.sub_total_amount,
+                order.shipping_charge,
+                order.total_amount,
+                order.address
+            )
+
+
+
+
+
+            val documentRef = mFireStore.collection(Constants.SOLD_PRODUCTS)
+                    .document(cartItem.product_id)
+            writeBatch.set(documentRef,soldProduct)
+        }
+        for (carItem in cartList){
+            val documentRef = mFireStore.collection(Constants.CART_ITEM)
+                    .document(carItem.id)
+            writeBatch.delete(documentRef)
+        }
+
+        writeBatch.commit()
+                .addOnSuccessListener {
+                activity.updatedAllDetailsSuccessful()
+
+        }
+                .addOnFailureListener {
+                    activity.hideDialog()
+                    Timber.d("Error while updating all the details after order placed")
+                }
 
     }
+
+    fun getSoldProductList(fragment: SoldProductsFragment){
+        mFireStore.collection(Constants.SOLD_PRODUCTS)
+            .whereEqualTo(Constants.USER_ID,getCurrentUserId())
+            .get()
+            .addOnSuccessListener {
+                val list = ArrayList<SoldProduct>()
+                for (i in it.documents){
+
+                    val soldProduct = i.toObject(SoldProduct::class.java)
+                    soldProduct?.id = i.id
+                    if (soldProduct != null) {
+                        list.add(soldProduct)
+                    }
+                }
+                fragment.successSoldProductList(list)
+            }
+            .addOnFailureListener {
+                fragment.hideDialog()
+                Timber.d("Error while getting the list of sold products.")
+            }
+    }
+
+
+
+
+
+    fun getMyOrderList(fragment: OrdersFragment){
+        mFireStore.collection(Constants.ORDERS)
+                .whereEqualTo(Constants.USER_ID,getCurrentUserId())
+                .get()
+                .addOnSuccessListener {
+                    val orderList = ArrayList<Order>()
+                    for (item in it.documents){
+                        val model = item.toObject(Order::class.java)
+                        if (model != null) {
+                            orderList.add(model)
+                            model.id = item.id
+                            Timber.d("enter getMyOrder ${model.id} and ${item.id}")
+                        }
+                    }
+                    fragment.populateOrdersListInUI(orderList)
+
+                }
+                .addOnFailureListener {
+                    fragment.hideDialog()
+                    Timber.d("Error while getting the orders list cause $it")
+                }
+    }
+
+
 }

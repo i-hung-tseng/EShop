@@ -36,7 +36,7 @@ class SplashActivity : AppCompatActivity() {
             },
         1500
         )
-         val typeface: Typeface = Typeface.createFromAsset(assets,"Montserrat-Bold.ttf")
-        findViewById<TextView>(R.id.tv_app_name).typeface = typeface
+//         val typeface: Typeface = Typeface.createFromAsset(assets,"Montserrat-Bold.ttf")
+//        findViewById<TextView>(R.id.tv_app_name).typeface = typeface
     }
 }

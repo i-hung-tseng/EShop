@@ -45,6 +45,32 @@ object Constants {
 //    Cart
     const val CART_ITEM = "cartItem"
     const val DEFAULT_CART_QUANTITY: Int = 1
+    const val CART_QUANTITY: String = "cart_quantity"
+
+
+//    Add Address
+    const val HOME = "home"
+    const val OFFICE = "office"
+    const val OTHER = "other"
+    const val ADDRESS = "address"
+    const val ID = "id"
+
+    const val EXTRA_ADDRESS_DETAILS = "AddressDetails"
+    const val EXTRA_SELECT_ADDRESS = "extra_select_address"
+    const val ADD_ADDRESS_REQUEST_CODE = 121
+    const val EXTRA_SELECTED_ADDRESS = "extra_selected_address"
+
+    const val ORDERS: String = "orders"
+
+    const val STOCK_QUANTITY: String = "stock_quantity"
+    const val EXTRA_MY_ORDER_DETAILS = "extra_my_order_details"
+
+//    soldOutProduct
+    const val SOLD_PRODUCTS = "sold_products"
+    const val EXTRA_SOLD_PRODUCT_DETAILS = "extra_sold_product_details"
+
+
+
 
     fun showImageChooser(activity: Activity){
         val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)

@@ -1,5 +1,6 @@
 package com.example.eshop.ui.activities.activities
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -21,6 +22,7 @@ class ProductDetailsActivity : BaseActivity(),View.OnClickListener {
 
     lateinit var product: Product
     lateinit var currentId: String
+    private var mProductOwnerId: String = ""
 
 
 
@@ -46,12 +48,19 @@ class ProductDetailsActivity : BaseActivity(),View.OnClickListener {
 
         if (intent.hasExtra(Constants.PRODUCT)){
             product = intent.getParcelableExtra<Product>(Constants.PRODUCT)!!
+            mProductOwnerId = product.user_id
             val productUserId = product.user_id
             if (productUserId == currentId){
                 btn_add_to_cart.visibility = View.GONE
                 btn_go_to_cart.visibility = View.GONE
             }else{
                 btn_add_to_cart.visibility = View.VISIBLE
+                FirestoreClass().checkExistsInCart(this,product.product_id)
+            }
+            if (product.quantity == 0){
+                btn_add_to_cart.visibility = View.GONE
+                tv_product_details_available_quantity.text = resources.getString(R.string.lbl_out_of_stock)
+                tv_product_details_available_quantity.setTextColor(ContextCompat.getColor(this,R.color.colorSnackBarError))
             }
             setProductDetails()
         }
@@ -115,13 +124,17 @@ class ProductDetailsActivity : BaseActivity(),View.OnClickListener {
     }
 
     private fun addCartItemToFireStore(){
+        Timber.d("addCartItem prodcut.quantity: ${product.quantity}")
         val cartItem = CartItem(
                 currentId,
+                mProductOwnerId,
                 product.product_id,
                 product.title,
                 product.price,
                 product.photo,
-                Constants.DEFAULT_CART_QUANTITY
+                Constants.DEFAULT_CART_QUANTITY,
+                product.quantity,
+                ""
 
         )
         FirestoreClass().addProductToCart(this,cartItem)

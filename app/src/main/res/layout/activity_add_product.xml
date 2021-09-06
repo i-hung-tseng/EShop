@@ -31,12 +31,30 @@
 
     </androidx.appcompat.widget.Toolbar>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_addProduct_activity"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
+
+
+
 
     <ImageView
         android:id="@+id/iv_product"
         android:layout_width="match_parent"
         android:layout_height="@dimen/addProduct_image_height"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_addProduct_activity"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:src="@color/colorImageViewBackground" />
@@ -175,5 +193,8 @@
         android:textColor="@color/colorWhite"
         app:layout_constraintTop_toBottomOf="@+id/til_addProduct_product_quantity"/>
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

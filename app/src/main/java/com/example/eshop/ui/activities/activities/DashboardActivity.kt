@@ -29,7 +29,7 @@ class DashboardActivity : BaseActivity() {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(setOf(
-                R.id.navigation_products, R.id.navigation_dashboard, R.id.navigation_orders))
+                R.id.navigation_products, R.id.navigation_dashboard, R.id.navigation_orders, R.id.navigation_sold_product))
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }

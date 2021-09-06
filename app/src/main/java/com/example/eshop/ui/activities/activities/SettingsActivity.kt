@@ -25,6 +25,7 @@ class SettingsActivity : BaseActivity(),View.OnClickListener {
         setupActionBar()
         btn_logout.setOnClickListener(this)
         tv_edit.setOnClickListener(this)
+        ll_address.setOnClickListener(this)
     }
 
 
@@ -80,6 +81,10 @@ class SettingsActivity : BaseActivity(),View.OnClickListener {
                     val intent = Intent(this, UserProfileActivity::class.java)
                     intent.putExtra(Constants.EXTRA_USER_DETAILS,mUserDetails)
                     startActivity(intent)
+                }
+
+                R.id.ll_address ->{
+                    startActivity(Intent(this,AddressListActivity::class.java))
                 }
             }
         }

@@ -34,7 +34,7 @@ class ProductAdapter(private val fragment: ProductsFragment,private val context:
         if (holder is MyViewHolder){
             GlideLoader(context).loadProductPicture(model.photo,holder.itemView.iv_list_item_product)
             holder.itemView.tv_item_name.text = model.title
-            holder.itemView.tv_item_price.text = model.price.toString()
+            holder.itemView.tv_item_price.text = "$${model.price}"
             holder.itemView.ib_delete_product.setOnClickListener{
             fragment.deleteProduct(model.product_id)
             }

@@ -23,4 +23,11 @@
         android:label="@string/title_orders"
         tools:layout="@layout/fragment_orders" />
 
+<!--    這邊的 name是指要把內容變成他的意思-->
+    <fragment
+        android:id="@+id/navigation_sold_product"
+        android:name="com.example.eshop.ui.activities.fragments.SoldProductsFragment"
+        android:label="@string/title_sold_products"
+        tools:layout="@layout/fragment_sold_products" />
+
 </navigation>
